@@ -1,5 +1,5 @@
 //
-//  NavigationController.swift
+//  CustomNavigationController.swift
 //  BehindTheName
 //
 //  Created by Victor Perdomo on 21/04/2020.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AuthKeyNavigationController: UINavigationController, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
+class CustomNavigationController: UINavigationController, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
