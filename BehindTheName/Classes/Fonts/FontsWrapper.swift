@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class SantanderFont {
+public class CustomFont {
     
     public class func bold(size: CGFloat) -> UIFont {
         return UIFont.systemFont(ofSize: size, weight: .bold)
