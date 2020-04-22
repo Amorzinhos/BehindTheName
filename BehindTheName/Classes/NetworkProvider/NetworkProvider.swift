@@ -13,8 +13,7 @@ public struct DataResponse {
     public let response: URLResponse?
 }
 
-public typealias HTTPResponseSuccess = Result<DataResponse>
-public typealias HTTPResponseError = Result<Error>
+public typealias HTTPResponse = Result<DataResponse>
 
 class NetworkProvider {
     
@@ -35,7 +34,7 @@ class NetworkProvider {
 
     init() {}
     
-    func request(_ baseUrl: String, path: String?, method: HTTPMethod, parameters: [String: Any]? = nil, encoding: ParameterEncoding?, headers: [String: String]? = nil, successHandler: @escaping (HTTPResponseSuccess) -> Void, errorHandler: @escaping (HTTPResponseSuccess) -> Void) {
+    func request(_ baseUrl: String, path: String?, method: HTTPMethod, parameters: [String: Any]? = nil, encoding: ParameterEncoding?, headers: [String: String]? = nil, completionHandler: @escaping (HTTPResponse) -> Void) {
         do {
             let url = try self.validate(url: baseUrl, path: path)
             let acceptableStatusCodes: Range<Int> = 200 ..< 300
@@ -44,17 +43,17 @@ class NetworkProvider {
                 .validate(statusCode: acceptableStatusCodes)
                 .response { response in
                     if let error = response.error {
-                        errorHandler(.failure(error))
+                        completionHandler(.failure(error))
                         return
                     }
                     guard let data = response.data else {
-                        errorHandler(.failure(Error.noDataReceived))
+                        completionHandler(.failure(Error.noDataReceived))
                         return
                     }
-                    successHandler(.success(DataResponse(data: data, response: response.response)))
+                    completionHandler(.success(DataResponse(data: data, response: response.response)))
                 }
         } catch {
-            errorHandler(.failure(error))
+            completionHandler(.failure(error))
             return
         }
     }
